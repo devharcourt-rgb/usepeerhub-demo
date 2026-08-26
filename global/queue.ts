@@ -1,0 +1,1 @@
+export const DEFAULT_REDIS_QUEUE = "DEFAULT";
