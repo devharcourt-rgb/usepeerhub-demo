@@ -1,0 +1,43 @@
+import express from "express";
+import protect from "../../../middlewares/auth";
+import { body, validationResult } from "express-validator";
+import vendElectricityHandler from "../../../handlers/billers/electricity/vend-electricity.handler";
+
+const router = express.Router();
+
+const validateRequest = () => {
+  return [
+    body("disco").notEmpty().withMessage("Disco is required"),
+    body("customerId").notEmpty().withMessage("Customer ID is required"),
+    body("meterType")
+      .isIn(["prepaid", "postpaid"])
+      .withMessage("meterType must be one of prepaid, postpaid"),
+    body("amount")
+      .isFloat({ min: 50 })
+      .withMessage("Amount must be at least 50"),
+    (req: any, res: any, next: any) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next({ errors: errors.array() });
+      }
+      next();
+    },
+  ];
+};
+
+/**
+ * @description Pay an electricity bill via Nomba. Creates a PENDING
+ * transaction — it's confirmed COMPLETED/FAILED asynchronously via the
+ * Nomba webhook.
+ * @route POST /api/billers/nomba/electricity/vend
+ * @access Private
+ * @method POST
+ */
+router.post(
+  "/electricity/vend",
+  protect,
+  validateRequest(),
+  vendElectricityHandler,
+);
+
+export default router;

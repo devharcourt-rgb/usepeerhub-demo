@@ -1,0 +1,40 @@
+import express from "express";
+import validateAirtimeRoutes from "./validate-airtime.routes";
+import vendAirtimeRoutes from "./vend-airtime.routes";
+import getDataPlansRoutes from "./get-data-plans.routes";
+import validateDataRoutes from "./validate-data.routes";
+import vendDataRoutes from "./vend-data.routes";
+import getCableProductsRoutes from "./get-cable-products.routes";
+import lookupCableCustomerRoutes from "./lookup-cable-customer.routes";
+import validateCableRoutes from "./validate-cable.routes";
+import vendCableRoutes from "./vend-cable.routes";
+import getDiscosRoutes from "./get-discos.routes";
+import lookupElectricityCustomerRoutes from "./lookup-electricity-customer.routes";
+import validateElectricityRoutes from "./validate-electricity.routes";
+import vendElectricityRoutes from "./vend-electricity.routes";
+import getBettingProvidersRoutes from "./get-betting-providers.routes";
+import lookupBettingCustomerRoutes from "./lookup-betting-customer.routes";
+import validateBettingRoutes from "./validate-betting.routes";
+import vendBettingRoutes from "./vend-betting.routes";
+
+const router = express.Router();
+
+router.use(validateAirtimeRoutes);
+router.use(vendAirtimeRoutes);
+router.use(getDataPlansRoutes);
+router.use(validateDataRoutes);
+router.use(vendDataRoutes);
+router.use(getCableProductsRoutes);
+router.use(lookupCableCustomerRoutes);
+router.use(validateCableRoutes);
+router.use(vendCableRoutes);
+router.use(getDiscosRoutes);
+router.use(lookupElectricityCustomerRoutes);
+router.use(validateElectricityRoutes);
+router.use(vendElectricityRoutes);
+router.use(getBettingProvidersRoutes);
+router.use(lookupBettingCustomerRoutes);
+router.use(validateBettingRoutes);
+router.use(vendBettingRoutes);
+
+export default router;

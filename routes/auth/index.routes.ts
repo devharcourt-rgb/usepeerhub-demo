@@ -9,7 +9,6 @@ import forgotPasswordRoute from "./forgot-password.routes";
 import resetPasswordRoute from "./reset-password.routes";
 import logoutRoute from "./logout.routes";
 import changePasswordRoute from "./change-password.routes";
-import verifyBvnRoutes from "./verifyBvn.routes";
 
 router.use(loginRoute);
 router.use(registerRoute);
@@ -19,6 +18,5 @@ router.use(forgotPasswordRoute);
 router.use(resetPasswordRoute);
 router.use(logoutRoute);
 router.use(changePasswordRoute);
-router.use(verifyBvnRoutes);
 
 export default router;

@@ -25,7 +25,7 @@ async function countrySetHandler(req: any, res: Response, next: NextFunction) {
     user.country = country;
     await user.save();
      if(user.country == "Nigeria"){
-       await virtualAccountService.generate(user, true);
+       await virtualAccountService.createVirtualAccount(user);
      }
     return res.json({
       message: "Country Has been saved",
