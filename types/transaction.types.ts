@@ -11,6 +11,7 @@ export enum TransactionDescription {
   DATA = "Data",
   CABLE = "Cable",
   ELECTRICITY = "Electricity",
+  CRYPTO_DEPOSIT = "Crypto Deposit",
   OTHER = "Other",
   FLIGHT = "Flight",
 }

@@ -5,6 +5,7 @@ import HTTPException from "../../../utils/error.utils";
 import { HTTPStatus } from "../../../utils/http.utils";
 import { AccountStatus } from "../../../types/user.types";
 import { CustomSession } from "../../../utils/session.utils";
+import { AccountRole } from "../../../types/role.types";
 
 async function adminLoginHandler(
   req: Request,
@@ -36,6 +37,7 @@ async function adminLoginHandler(
     }
 
     (req.session as CustomSession).userId = admin.id;
+    (req.session as CustomSession).role = AccountRole.ADMIN;
 
     req.session.save(function (error) {
       if (error) {
