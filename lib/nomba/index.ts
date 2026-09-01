@@ -34,7 +34,9 @@ import {
 export class NombaClient {
   private static baseUrl =
     process.env.NOMBA_API_URL ??
-    (isProduction ? "https://api.nomba.com/v1" : "https://sandbox.nomba.com/v1");
+    (isProduction
+      ? "https://api.nomba.com/v1"
+      : "https://sandbox.nomba.com/v1");
 
   // The wallet transfer endpoint lives under /v2 while everything else is
   // still /v1 — derive it from baseUrl rather than adding a second env var.
@@ -126,7 +128,9 @@ export class NombaClient {
     return apiResponse;
   }
 
-  private static cacheTokenResponse(apiResponse: ApiResponse<TokenResponse>): string {
+  private static cacheTokenResponse(
+    apiResponse: ApiResponse<TokenResponse>,
+  ): string {
     const { access_token, refresh_token, expiresAt } = apiResponse.data;
 
     NombaClient.cachedToken = access_token;
@@ -219,9 +223,12 @@ export class NombaClient {
 
   /** Bank codes rarely change — callers should cache this response. */
   async fetchBanks(): Promise<ApiResponse<Bank[]>> {
-    return this.authorizedFetch<Bank[]>(`${NombaClient.baseUrl}/transfers/banks`, {
-      method: "GET",
-    });
+    return this.authorizedFetch<Bank[]>(
+      `${NombaClient.baseUrl}/transfers/banks`,
+      {
+        method: "GET",
+      },
+    );
   }
 
   async lookupBankAccount(

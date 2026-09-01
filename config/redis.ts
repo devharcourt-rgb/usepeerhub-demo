@@ -2,14 +2,16 @@ import IORedis from "ioredis";
 import dotenv from "dotenv";
 dotenv.config();
 
-const REDIS_HOST = process.env.REDIS_HOST as string;
-const REDIS_PASSWORD = process.env.REDIS_PASSWORD as string;
-const REDIS_PORT = process.env.REDIS_PORT as unknown as number;
+const REDIS_HOST = process.env.REDIS_HOST || "127.0.0.1";
+const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
+const REDIS_PORT = Number(process.env.REDIS_PORT) || 6379;
 
 export const redisConnection = new IORedis({
   host: REDIS_HOST,
-  username: "default",
-  password: REDIS_PASSWORD,
+  port: REDIS_PORT,
+  // Only authenticate when a password is configured. The local compose Redis
+  // runs without auth, and sending AUTH to it fails the connection.
+  ...(REDIS_PASSWORD ? { username: "default", password: REDIS_PASSWORD } : {}),
   maxRetriesPerRequest: null,
 });
 
