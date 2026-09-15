@@ -137,3 +137,7 @@ docker-compose.dev.yaml
 Dockerfile.dev
 
 private.pem
+# service account / credential files
+config/firebase-config.json
+*-service-account*.json
+*serviceAccountKey*.json
