@@ -45,13 +45,22 @@ app.set("trust proxy", 1);
 app.use(blockIPMiddleware);
 app.use(requestLimiter);
 
+// "*" here means "allow any origin" — kept as a literal entry (rather than
+// short-circuiting elsewhere) so this array is still the one place to edit
+// if this ever needs to become a real allowlist instead.
 const whiteList = ["*"];
 
 app.set("trust proxy", 1);
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || whiteList.includes(origin)) {
+      // whiteList.includes(origin) alone never matched a real request: "*"
+      // was meant as "allow everything", but Array.includes does a literal
+      // equality check, not wildcard matching — no browser ever sends the
+      // literal Origin header "*". That's what was blocking Bull Board's
+      // own same-origin admin requests (e.g. clearing failed jobs) with
+      // "Not allowed by CORS".
+      if (!origin || whiteList.includes("*") || whiteList.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
