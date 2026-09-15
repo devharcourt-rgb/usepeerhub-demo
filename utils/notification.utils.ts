@@ -24,7 +24,7 @@ export class NotificationService {
     user_id: string,
     token: string,
     platform: string,
-    source: string
+    source: string,
   ): Promise<void> {
     try {
       // Check if token already exists
@@ -94,7 +94,7 @@ export class NotificationService {
     device: IDeviceToken,
     title: string,
     body: string,
-    data?: any
+    data?: any,
   ): Promise<void> {
     try {
       if (/**device.source === 'expo' */ false) {
@@ -121,7 +121,7 @@ export class NotificationService {
             title,
             body,
             image:
-              "https://res.cloudinary.com/dgn6edv1k/image/upload/v1730034876/social_2_pyfqro.jpg",
+              "https://res.cloudinary.com/dgn6edv1k/image/upload/v1789469138/logo-blue_twd5mt.svg",
           },
           data: data || {},
         };
@@ -150,7 +150,7 @@ export class NotificationService {
     devices: IDeviceToken[],
     title: string,
     body: string,
-    data?: any
+    data?: any,
   ): Promise<void> {
     try {
       if (devices.length === 0) return;
@@ -192,7 +192,7 @@ export class NotificationService {
     user_id: string,
     title: string,
     body: string,
-    data?: any
+    data?: any,
   ): Promise<void> {
     try {
       const devices = await DeviceToken.find({ user_id });
@@ -208,7 +208,7 @@ export class NotificationService {
    */
   public async findDevice(
     token: string,
-    user_id: any
+    user_id: any,
   ): Promise<IDeviceToken | null> {
     try {
       const device = await DeviceToken.findOne({ token, user_id });

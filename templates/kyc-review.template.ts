@@ -1,6 +1,6 @@
 import { socialIconsHtml } from "./social-icons.template";
 
-export const welcomeEmailTemplate = ({
+export const kycReviewEmailTemplate = ({
   firstName,
   companyName = "PeerHub",
 }: {
@@ -31,12 +31,6 @@ export const welcomeEmailTemplate = ({
             overflow: hidden;
         }
 
-        /* The source logo file has a lot of blank space baked in below the
-           mark itself, which only gets bigger as the image is scaled up.
-           Cropping the wrapper to the mark's actual height (rather than
-           the full 120px image box) is what actually closes the gap —
-           margin/transform between the two elements can't fix whitespace
-           that lives inside the image. */
         .logo-wrap {
             text-align: center;
             height: 74px;
@@ -80,12 +74,12 @@ export const welcomeEmailTemplate = ({
     </div>
     <div class="card">
         <div class="card-header">
-            <h1>Welcome to ${companyName}!</h1>
+            <h1>Verification In Progress</h1>
         </div>
         <div class="card-body">
             <p>Hey ${firstName},</p>
-            <p>We're thrilled to have you join ${companyName}. Your account is ready, and we can't wait for you to get started.</p>
-            <p>If you ever need a hand, our support team is just an email away.</p>
+            <p>We've received your KYC documents and they're now under review.</p>
+            <p>We'll email you as soon as the review is complete — no action is needed from you in the meantime.</p>
             <p>Best regards,<br>The ${companyName} Team</p>
         </div>
     </div>

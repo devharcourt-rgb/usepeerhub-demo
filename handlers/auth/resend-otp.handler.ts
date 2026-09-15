@@ -31,12 +31,11 @@ async function resendOtpHandler(
 
     // Add job to queue
     queueProducer.addJob({
-      name: "send-welcome-email",
+      name: "send-otp-email",
       data: {
         otp: otp,
         recipientEmail: user.emailAddress,
         firstName: user.firstName,
-        lastName: user.firstName,
       },
     });
 

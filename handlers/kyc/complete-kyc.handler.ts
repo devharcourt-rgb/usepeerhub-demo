@@ -10,6 +10,9 @@ import UploadService from "../../services/upload.service";
 import { VirtualAccountService } from "../../services/virtualAccount.service";
 import { UserModel } from "../../models/user.model";
 import { formatPhoneNumber } from "../../utils/auth.utils";
+import QueueProducer from "../../queue/producer";
+import redisConnection from "../../config/redis";
+import { DEFAULT_REDIS_QUEUE } from "../../global/queue";
 
 async function completeKycHandler(req: any, res: Response, next: NextFunction) {
   const {
@@ -24,6 +27,7 @@ async function completeKycHandler(req: any, res: Response, next: NextFunction) {
 
   const uploadService = new UploadService();
   const virtualAccountService = new VirtualAccountService();
+  const queueProducer = new QueueProducer(redisConnection, DEFAULT_REDIS_QUEUE);
 
   try {
     if (
@@ -104,6 +108,14 @@ async function completeKycHandler(req: any, res: Response, next: NextFunction) {
     });
 
     // await virtualAccountService.generate(user, true);
+
+    queueProducer.addJob({
+      name: "send-kyc-review-email",
+      data: {
+        recipientEmail: user.emailAddress,
+        firstName: user.firstName,
+      },
+    });
 
     return res.json({
       message: "Verification in progress",

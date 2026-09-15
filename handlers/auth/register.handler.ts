@@ -46,14 +46,23 @@ async function registerHandler(
 
       const otp = await user.generateOTP();
 
-      // Add job to queue
+      // Two separate emails: a plain welcome/onboarding message, and the
+      // OTP the user actually needs to verify their address.
       queueProducer.addJob({
         name: "send-welcome-email",
+        data: {
+          recipientEmail: user.emailAddress,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
+      });
+
+      queueProducer.addJob({
+        name: "send-otp-email",
         data: {
           otp: otp,
           recipientEmail: user.emailAddress,
           firstName: user.firstName,
-          lastName: user.firstName,
         },
       });
 

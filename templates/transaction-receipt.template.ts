@@ -117,7 +117,7 @@ export const transactionReceiptTemplate = () => {
   <div class="receipt-container">
     <div class="receipt-header">
       <div class="logo-container">
-        <img class="logo" src="https://res.cloudinary.com/dgn6edv1k/image/upload/v1730034876/social_2_pyfqro.jpg"
+        <img class="logo" src="https://res.cloudinary.com/dgn6edv1k/image/upload/v1789469138/logo-blue_twd5mt.svg"
           alt="Company Logo">
       </div>
       <h1 class="receipt-title">Transaction Receipt</h1>

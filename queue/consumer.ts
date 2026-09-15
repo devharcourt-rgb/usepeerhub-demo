@@ -80,6 +80,8 @@ class QueueConsumer {
     try {
       switch (job.name) {
         case "send-welcome-email":
+        case "send-otp-email":
+        case "send-kyc-review-email":
         case "send-admin-welcome-email":
         case "send-forgot-password-email":
         case "send-change-password-email":

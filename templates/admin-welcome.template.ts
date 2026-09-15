@@ -66,7 +66,7 @@ export const adminWelcomeEmailTemplate = ({
     </head>
     <body>
     <div class="header">
-     <img id="logo" src="https://res.cloudinary.com/dgn6edv1k/image/upload/v1730034876/social_2_pyfqro.jpg" width="50" height="50"/>
+     <img id="logo" src="https://res.cloudinary.com/dgn6edv1k/image/upload/v1789469138/logo-blue_twd5mt.svg" width="50" height="50"/>
         <h1>Welcome to ${companyName} Admin!</h1>
     </div>
     <div class="content">

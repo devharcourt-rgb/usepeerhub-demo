@@ -10,6 +10,8 @@ import { forgotPasscodeEmailTemplate } from "../templates/forgot-passcode.templa
 import { forgotTransactionPinEmailTemplate } from "../templates/forgot-transaction-pin.template";
 import { forgotPasswordEmailTemplate } from "../templates/forgot-password.template";
 import { welcomeEmailTemplate } from "../templates/welcome.template";
+import { otpEmailTemplate } from "../templates/otp.template";
+import { kycReviewEmailTemplate } from "../templates/kyc-review.template";
 import {
   AdminAccountCreationEmailProps,
   AdminInviteEmailProps,
@@ -22,6 +24,8 @@ import {
   ForgotPasscodeEmailProps,
   ForgotTransactionPinEmailProps,
   ForgotPasswordEmailProps,
+  KycReviewEmailProps,
+  OtpEmailProps,
   SendAdminElectricityTopupEmailProps,
   SendDiscoTokenEmailProps,
   WelcomeEmailProps,
@@ -36,13 +40,32 @@ export async function getEmailTemplate({
 }) {
   switch (type) {
     case "send-welcome-email": {
-      const { firstName, lastName, otp } = data as WelcomeEmailProps;
+      const { firstName } = data as WelcomeEmailProps;
       return {
         subject: "Welcome to PeerHub",
         template: welcomeEmailTemplate({
           firstName,
-          lastName,
+        }),
+      };
+    }
+
+    case "send-otp-email": {
+      const { firstName, otp } = data as OtpEmailProps;
+      return {
+        subject: "Verify Your Email Address",
+        template: otpEmailTemplate({
+          firstName,
           otp,
+        }),
+      };
+    }
+
+    case "send-kyc-review-email": {
+      const { firstName } = data as KycReviewEmailProps;
+      return {
+        subject: "Your KYC Submission Is Under Review",
+        template: kycReviewEmailTemplate({
+          firstName,
         }),
       };
     }

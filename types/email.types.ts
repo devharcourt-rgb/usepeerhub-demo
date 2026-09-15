@@ -1,5 +1,7 @@
 export type EmailType =
   | "send-welcome-email"
+  | "send-otp-email"
+  | "send-kyc-review-email"
   | "send-admin-welcome-email"
   | "send-forgot-password-email"
   | "send-change-password-email"
@@ -14,6 +16,8 @@ export type EmailType =
 
 export type EmailProps =
   | WelcomeEmailProps
+  | OtpEmailProps
+  | KycReviewEmailProps
   | ForgotPasswordEmailProps
   | ChangePasswordEmailProps
   | CreditEmailProps
@@ -29,7 +33,17 @@ export type EmailProps =
 export interface WelcomeEmailProps {
   firstName: string;
   lastName: string;
+  recipientEmail: string;
+}
+
+export interface OtpEmailProps {
+  firstName: string;
   otp: string;
+  recipientEmail: string;
+}
+
+export interface KycReviewEmailProps {
+  firstName: string;
   recipientEmail: string;
 }
 

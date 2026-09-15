@@ -1,10 +1,12 @@
 import { socialIconsHtml } from "./social-icons.template";
 
-export const welcomeEmailTemplate = ({
+export const otpEmailTemplate = ({
   firstName,
+  otp,
   companyName = "PeerHub",
 }: {
   firstName: string;
+  otp: string;
   companyName?: string;
 }) => {
   return `<!DOCTYPE html>
@@ -62,6 +64,19 @@ export const welcomeEmailTemplate = ({
             padding: 32px 24px;
         }
 
+        .otp {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 4px;
+            padding: 14px;
+            background-color: #f2f0fe;
+            border: 1px dashed #2C12F7;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #000000;
+        }
+
         .footer {
             text-align: center;
             font-size: 0.8em;
@@ -80,12 +95,13 @@ export const welcomeEmailTemplate = ({
     </div>
     <div class="card">
         <div class="card-header">
-            <h1>Welcome to ${companyName}!</h1>
+            <h1>Verify Your Email</h1>
         </div>
         <div class="card-body">
             <p>Hey ${firstName},</p>
-            <p>We're thrilled to have you join ${companyName}. Your account is ready, and we can't wait for you to get started.</p>
-            <p>If you ever need a hand, our support team is just an email away.</p>
+            <p>Use the code below to verify your email address. It expires in 10 minutes.</p>
+            <div class="otp">${otp}</div>
+            <p>If you didn't request this, you can safely ignore this email.</p>
             <p>Best regards,<br>The ${companyName} Team</p>
         </div>
     </div>
