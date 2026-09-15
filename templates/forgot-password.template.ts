@@ -1,41 +1,78 @@
+import { socialIconsHtml } from "./social-icons.template";
+
 export const forgotPasswordEmailTemplate = ({
   firstName,
   lastName,
   otp,
   id,
+  companyName = "PeerHub",
 }: {
   firstName: string;
   lastName: string;
   otp: string;
   id: string;
+  companyName?: string;
 }) => {
   return `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Login Activity</title>
-          <script src="https://kit.fontawesome.com/05a6f2a2fb.js" crossorigin="anonymous"></script>
-     <style>
+    <html lang="en">
+    <head>
+    <style>
+        /* Gmail strips external stylesheet loading, so this only takes
+           effect in clients that honor it (Apple Mail, some Outlook.com /
+           Android clients) — Arial is the fallback everywhere else. */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', Arial, sans-serif;
             line-height: 1.6;
-            color: #333;
-            max-width: 600px;
-            margin: 0 auto;
+            background-color: #f2f2f2;
+            margin: 0;
             padding: 20px;
         }
 
-        .header {
-            background-color: #010102;
-            color: white;
-            padding: 10px;
+        .card {
+            max-width: 480px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .logo-wrap {
+            text-align: center;
+            height: 74px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .card-header {
+            background-color: #2C12F7;
+            padding: 32px 24px;
             text-align: center;
         }
 
-        .content {
-            padding: 20px;
-            background-color: #f9f9f9;
+        .card-header h1 {
+            color: #ffffff;
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .card-body {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 32px 24px;
+        }
+
+        .otp {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 4px;
+            padding: 14px;
+            background-color: #f2f0fe;
+            border: 1px dashed #2C12F7;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #000000;
         }
 
         .footer {
@@ -45,48 +82,32 @@ export const forgotPasswordEmailTemplate = ({
             margin-top: 20px;
         }
 
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #010102;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .otp {
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            padding: 10px;
-            background-color: #e8f4fd;
-            border: 1px dashed #010102;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-        #logo{
-            transform: translateY(20px) !important
+        .social-icons {
+            margin-top: 14px;
         }
     </style>
-      </head>
-        <body>
-    <div class="header">
-     <img id="logo" src="https://res.cloudinary.com/dgn6edv1k/image/upload/v1789469138/logo-blue_twd5mt.svg" width="50" height="50"/>
-        <h1>Forgot Password</h1>
+    </head>
+    <body>
+    <div class="logo-wrap">
+        <img id="logo" src="https://res.cloudinary.com/dgn6edv1k/image/upload/v1789469138/logo-blue_twd5mt.svg" width="120" height="120" alt="${companyName}" />
     </div>
-    <div class="content">
-        <p>Hello ${firstName} ${lastName},</p>
-        <p>We received a request to reset your password. If you did not request this, please ignore this email.</p>
-        <p>To reset your password, use the otp below:</p>
-        <p style="text-align: center;">
-           <b style="font-size: 1.2rem">${otp}</b>
-        </p>
-        <p>If you have any questions or concerns, please don't hesitate to contact our support team.</p>
-        <p>Best regards,<br>The PeerHub Team</p>
+    <div class="card">
+        <div class="card-header">
+            <h1>Forgot Password</h1>
+        </div>
+        <div class="card-body">
+            <p>Hello ${firstName} ${lastName},</p>
+            <p>We received a request to reset your password. If you did not request this, please ignore this email.</p>
+            <p>To reset your password, use the code below:</p>
+            <div class="otp">${otp}</div>
+            <p>If you have any questions or concerns, please don't hesitate to contact our support team.</p>
+            <p>Best regards,<br>The ${companyName} Team</p>
+        </div>
     </div>
     <div class="footer">
         <p>This is an automated message, please do not reply directly to this email.</p>
+        ${socialIconsHtml()}
     </div>
     </body>
-      </html>`;
+    </html>`;
 };

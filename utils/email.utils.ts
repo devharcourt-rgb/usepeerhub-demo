@@ -153,7 +153,7 @@ export async function getEmailTemplate({
       const { invitedBy, role, id } = data as AdminInviteEmailProps;
 
       return {
-        subject: "Invite to BlowMoney",
+        subject: "Invite to PeerHub",
         template: adminInviteEmailTemplate({
           role,
           id,

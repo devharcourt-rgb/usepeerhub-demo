@@ -2,7 +2,7 @@ export const forgotTransactionPinEmailTemplate = ({
   firstName,
   lastName,
   otp,
-  companyName = "BlowMoney",
+  companyName = "PeerHub",
 }: {
   firstName: string;
   lastName: string;

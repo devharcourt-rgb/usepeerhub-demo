@@ -100,10 +100,13 @@ class TransactionService {
       // Read the PDF file into memory before sending
       const pdfBuffer = fs.readFileSync(pdfPath);
 
-      // Send email with PDF attachment
-      await this.resend.emails.send({
+      // Send email with PDF attachment. Resend doesn't throw on a send
+      // failure — it resolves with { data: null, error } instead — so this
+      // must be checked explicitly, or a failed send here would look
+      // identical to a successful one to every caller.
+      const { error: sendError } = await this.resend.emails.send({
         to: [recipientEmail],
-        from: "BlowMoney <support@postwallet.africa>",
+        from: "PeerHub <support@usepeerhub.com>",
         subject: "Transaction Receipt",
         html: `<p>Please find your transaction receipt attached.</p>`,
         attachments: [
@@ -114,8 +117,14 @@ class TransactionService {
         ],
       });
 
+      if (sendError) {
+        throw new Error(
+          `Resend error (${sendError.name}): ${sendError.message}`,
+        );
+      }
+
       logger.info(
-        `Receipt email sent to ${recipientEmail} for transaction ${id}`
+        `Receipt email sent to ${recipientEmail} for transaction ${id}`,
       );
 
       return pdfPath;
@@ -141,13 +150,13 @@ class TransactionService {
         if (pdfPath && fs.existsSync(pdfPath)) {
           fs.unlinkSync(pdfPath);
           logger.debug(
-            `PDF file deleted for transaction ${id} after sending email`
+            `PDF file deleted for transaction ${id} after sending email`,
           );
         }
       } catch (cleanupError: any) {
         // Log cleanup errors but don't throw them
         logger.warn(
-          `Error during cleanup for transaction ${id}: ${cleanupError.message}`
+          `Error during cleanup for transaction ${id}: ${cleanupError.message}`,
         );
       }
     }
