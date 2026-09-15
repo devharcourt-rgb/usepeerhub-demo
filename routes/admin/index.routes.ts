@@ -8,6 +8,7 @@ import express from "express";
 // import adminSystemInfoRoutes from "./system-info/index.routes";
 // import adminAnalyticsRoutes from "./analytics/index.routes";
 import adminCryptoRoutes from "./crypto/index.routes";
+import adminCurrencyRoutes from "./currency/index.routes";
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ const router = express.Router();
 // router.use("/system-info", adminSystemInfoRoutes);
 // router.use("/analytics", adminAnalyticsRoutes);
 router.use("/crypto", adminCryptoRoutes);
+router.use("/currency", adminCurrencyRoutes);
 
 export default router;

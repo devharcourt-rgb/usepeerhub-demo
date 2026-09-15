@@ -4,6 +4,7 @@ import { CryptoDepositModel } from "../models/crypto-deposit.model";
 import { CryptoRateHistoryModel } from "../models/crypto-rate-history.model";
 import { TransactionModel } from "../models/transaction.model";
 import { CurrencyModel } from "../models/currency.model";
+import { CurrencyService } from "./currency.service";
 import HTTPException from "../utils/error.utils";
 import { HTTPStatus } from "../utils/http.utils";
 import {
@@ -24,6 +25,7 @@ export const CRYPTO_CHECK_DELAY_MS = 30_000;
 export const CRYPTO_MAX_CHECK_ATTEMPTS = 2880;
 
 const queueProducer = new QueueProducer(redisConnection, DEFAULT_REDIS_QUEUE);
+const currencyService = new CurrencyService();
 
 export interface VerifyDepositOutcome {
   requeue: boolean;
@@ -60,6 +62,62 @@ export class CryptoService {
         },
       },
     ]);
+  }
+
+  /**
+   * The user's balance for every active crypto asset, in the asset's own
+   * unit plus its NGN and USD equivalents at current rates. Every active
+   * asset is always included — one with no completed deposits comes back
+   * at balance 0 rather than being left out.
+   *
+   * "Balance" here is the sum of on-chain-VERIFIED amounts from COMPLETED
+   * deposits only (never claimedAmount, and never a still-PROCESSING
+   * deposit that hasn't hit its confirmation threshold yet) — the same
+   * trust rule verifyDeposit()/creditDeposit() already apply everywhere
+   * else in this file.
+   */
+  async getUserBalances(userId: string) {
+    const [assets, sums, usdToNgnRate] = await Promise.all([
+      CryptoAssetModel.find({ active: true }).sort({ symbol: 1, network: 1 }),
+      CryptoDepositModel.aggregate([
+        {
+          $match: {
+            user: new mongoose.Types.ObjectId(userId),
+            status: TransactionStatus.COMPLETED,
+          },
+        },
+        {
+          $group: {
+            _id: "$cryptoAsset",
+            balance: { $sum: "$verifiedAmount" },
+          },
+        },
+      ]),
+      currencyService.getRateToNGN("USD"),
+    ]);
+
+    const balanceByAssetId = new Map<string, number>(
+      sums.map((sum: any) => [sum._id.toString(), sum.balance as number]),
+    );
+
+    const balances = assets.map((asset) => {
+      const balance = balanceByAssetId.get(asset.id) ?? 0;
+      const balanceInNGN = balance * asset.rateToNGN;
+
+      return {
+        id: asset.id,
+        symbol: asset.symbol,
+        network: asset.network,
+        standard: asset.standard,
+        displayName: asset.displayName,
+        balance,
+        rateToNGN: asset.rateToNGN,
+        balanceInNGN,
+        balanceInUSD: usdToNgnRate > 0 ? balanceInNGN / usdToNgnRate : 0,
+      };
+    });
+
+    return { usdToNgnRate, balances };
   }
 
   async createDeposit(
