@@ -20,6 +20,19 @@ class QueueProducer {
       defaultJobOptions: {
         removeOnComplete: false,
         removeOnFail: false,
+        // Without this, BullMQ's default is 1 attempt — any transient
+        // failure (a network blip, a momentary rate limit, anything that
+        // would've cleared up on its own) becomes a permanently failed job
+        // that just sits there until someone notices it in Bull Board and
+        // clicks Retry by hand. 3 attempts with exponential backoff gives
+        // transient failures a real chance to self-heal; a job that still
+        // fails after that is very likely a genuine, non-transient problem
+        // worth a human's attention, and still lands in FAILED as before.
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 5000,
+        },
       },
     }));
   }
