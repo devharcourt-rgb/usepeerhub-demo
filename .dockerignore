@@ -3,3 +3,12 @@ npm-debug.log
 dist
 .git
 .gitignore
+
+# never bake secrets into the image (env is injected by the platform instead)
+.env
+.env.*
+!.env.example
+
+config/firebase-config.json
+*-service-account*.json
+*serviceAccountKey*.json
