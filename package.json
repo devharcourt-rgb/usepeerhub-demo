@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon app.ts --NODE_ENV=development",
     "build": "npx tsc",
-    "start": "npx ts-node app.ts",
+    "start": "node dist/app.js",
     "tsnode": "npx ts-node",
     "test": "jest"
   },
