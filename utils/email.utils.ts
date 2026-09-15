@@ -7,6 +7,7 @@ import { customerAccountCreationEmailTemplate } from "../templates/customer-acco
 import { debitEmailTemplate } from "../templates/debit-email.template";
 import { discoTokenEmailTemplate } from "../templates/disco-token.template";
 import { forgotPasscodeEmailTemplate } from "../templates/forgot-passcode.template";
+import { forgotTransactionPinEmailTemplate } from "../templates/forgot-transaction-pin.template";
 import { forgotPasswordEmailTemplate } from "../templates/forgot-password.template";
 import { welcomeEmailTemplate } from "../templates/welcome.template";
 import {
@@ -19,6 +20,7 @@ import {
   EmailProps,
   EmailType,
   ForgotPasscodeEmailProps,
+  ForgotTransactionPinEmailProps,
   ForgotPasswordEmailProps,
   SendAdminElectricityTopupEmailProps,
   SendDiscoTokenEmailProps,
@@ -157,6 +159,19 @@ export async function getEmailTemplate({
       return {
         subject: "Do Not Disclose",
         template: forgotPasscodeEmailTemplate({
+          firstName,
+          lastName,
+          otp,
+        }),
+      };
+    }
+
+    case "send-transaction-pin-reset-email": {
+      const { firstName, lastName, otp } =
+        data as ForgotTransactionPinEmailProps;
+      return {
+        subject: "Do Not Disclose",
+        template: forgotTransactionPinEmailTemplate({
           firstName,
           lastName,
           otp,

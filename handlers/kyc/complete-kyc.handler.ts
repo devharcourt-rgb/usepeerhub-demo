@@ -73,6 +73,17 @@ async function completeKycHandler(req: any, res: Response, next: NextFunction) {
       );
     }
 
+    const files = req.files as
+      | { [field: string]: Express.Multer.File[] }
+      | undefined;
+
+    if (!files?.documentImage?.[0] || !files?.selfieImage?.[0]) {
+      throw new HTTPException(
+        HTTPStatus.BAD_REQUEST,
+        "documentImage and selfieImage must be uploaded as multipart/form-data files, not as JSON fields",
+      );
+    }
+
     user.phoneNumber = formatPhoneNumber(phoneNumber, "Nigeria");
     user.country = "Nigeria";
 

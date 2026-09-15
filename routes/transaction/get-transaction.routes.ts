@@ -1,6 +1,6 @@
 import express from "express";
 import getSingleTransactionHandler from "../../handlers/transaction/get-transaction.handler";
-import adminProtect from "../../middlewares/admin";
+import protect from "../../middlewares/auth";
 const router = express.Router();
 
 /**
@@ -9,6 +9,6 @@ const router = express.Router();
  * @method Get
  * @route /transactions/:id
  */
-router.get("/:id", adminProtect, getSingleTransactionHandler);
+router.get("/:id", protect, getSingleTransactionHandler);
 
 export default router;

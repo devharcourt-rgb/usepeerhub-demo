@@ -8,6 +8,7 @@ export type EmailType =
   | "send-admin-invite-email"
   | "send-admin-account-creation-email"
   | "send-passcode-reset-email"
+  | "send-transaction-pin-reset-email"
   | "send-admin-electricity-topup-email"
   | "send-disco-token-email";
 
@@ -21,6 +22,7 @@ export type EmailProps =
   | AdminWelcomeEmailProps
   | AdminAccountCreationEmailProps
   | ForgotPasscodeEmailProps
+  | ForgotTransactionPinEmailProps
   | SendAdminElectricityTopupEmailProps
   | SendDiscoTokenEmailProps;
 
@@ -42,6 +44,13 @@ export interface SendAdminElectricityTopupEmailProps {
 }
 
 export interface ForgotPasscodeEmailProps {
+  firstName: string;
+  lastName: string;
+  otp: string;
+  recipientEmail: string;
+}
+
+export interface ForgotTransactionPinEmailProps {
   firstName: string;
   lastName: string;
   otp: string;

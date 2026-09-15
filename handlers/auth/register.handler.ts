@@ -39,7 +39,9 @@ async function registerHandler(
         password,
         ...(username
           ? { username: username.toLowerCase().replaceAll(" ", "") }
-          : {}),
+          : {
+              username: `${firstName.toLowerCase()}${lastName.toLowerCase()}`,
+            }),
       });
 
       const otp = await user.generateOTP();

@@ -4,7 +4,7 @@ import pingRoutes from "./ping.routes";
 
 const router = express.Router();
 
-router.use("/set-token", setTokenRoutes);
-router.use("/ping", pingRoutes);
+router.use(setTokenRoutes);
+router.use(pingRoutes);
 
 export default router;

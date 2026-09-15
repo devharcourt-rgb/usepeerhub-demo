@@ -4,7 +4,9 @@ import { HTTPStatus } from "../../utils/http.utils";
 import { CustomSession } from "../../utils/session.utils";
 import { AccountStatus } from "../../types/user.types";
 import { PasscodeModel } from "../../models/passcode.model";
+import { TransactionPinModel } from "../../models/transaction-pin.model";
 import { KycModel } from "../../models/kyc.model";
+import DeviceToken from "../../models/device-token.model";
 import { UserModel } from "../../models/user.model";
 import { AccountRole } from "../../types/role.types";
 
@@ -57,12 +59,22 @@ async function loginHandler(req: Request, res: Response, next: NextFunction) {
       user: user.id,
     });
 
+    const isPinSet = await TransactionPinModel.countDocuments({
+      user: user.id,
+    });
+
+    const isFcmTokenSet = await DeviceToken.countDocuments({
+      user_id: user.id,
+    });
+
     return res.json({
       message: "Login successful",
       data: {
         ...user.toJSON(),
         isPasscodeSet: isPasscodeSet > 0,
         isKycSet: isKycSet > 0,
+        isPinSet: isPinSet > 0,
+        isFcmTokenSet: isFcmTokenSet > 0,
       },
     });
   } catch (error) {

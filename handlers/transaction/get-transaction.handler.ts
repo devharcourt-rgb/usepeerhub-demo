@@ -4,18 +4,18 @@ import { TransactionModel } from "../../models/transaction.model";
 import mongoose from "mongoose";
 import HTTPException from "../../utils/error.utils";
 import { HTTPStatus } from "../../utils/http.utils";
-import { FlutterwaveClient } from "../../lib/flutterwave";
+// import { FlutterwaveClient } from "../../lib/flutterwave";
 import { TransactionStatus } from "../../types/transaction.types";
 
 async function getSingleTransactionHandler(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   const { userId } = getUser(req);
   const { id } = req.params;
 
-  const flwClient = new FlutterwaveClient();
+  // const flwClient = new FlutterwaveClient();
 
   try {
     const transaction = await TransactionModel.findById({
@@ -36,25 +36,25 @@ async function getSingleTransactionHandler(
       });
     }
 
-    const flwClientResponse = await flwClient.getPaymentStatus(transactionRef);
+    // const flwClientResponse = await flwClient.getPaymentStatus(transactionRef);
 
-    if (flwClientResponse.status === "error") {
-      transaction.status = TransactionStatus.FAILED;
+    // if (flwClientResponse.status === "error") {
+    //   transaction.status = TransactionStatus.FAILED;
 
-      await transaction.save();
+    //   await transaction.save();
 
-      return res.json({
-        message: flwClientResponse.message,
-        status: flwClientResponse.status,
-        data: {},
-      });
-    }
+    //   return res.json({
+    //     message: flwClientResponse.message,
+    //     status: flwClientResponse.status,
+    //     data: {},
+    //   });
+    // }
 
     return res.json({
       message: "Transaction fetched successfully",
       data: {
         transaction,
-        flutterwaveResponse: flwClientResponse.data,
+        // flutterwaveResponse: flwClientResponse.data,
       },
     });
   } catch (error) {

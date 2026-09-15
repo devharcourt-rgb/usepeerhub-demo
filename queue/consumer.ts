@@ -3,23 +3,23 @@ import { IJob } from "../types/job.types";
 import EmailService from "../services/email.service";
 import { EmailProps } from "../types/email.types";
 import TransactionService from "../services/transaction.service";
-<<<<<<< HEAD
 
-=======
-import { updateTransaction } from "../utils/transaction.utils";
-import { TransactionModel } from "../models/transaction.model";
-import BuyPowerClient from "../lib/buypower";
+// import { updateTransaction } from "../utils/transaction.utils";
+// import { TransactionModel } from "../models/transaction.model";
+// import BuyPowerClient from "../lib/buypower";
 import redisConnection from "../config/redis";
 import QueueProducer from "./producer";
 import { DEFAULT_REDIS_QUEUE } from "../global/queue";
 import { NotificationService } from "../utils/notification.utils";
-import { CryptoService, CRYPTO_CHECK_DELAY_MS } from "../services/crypto.service";
+import {
+  CryptoService,
+  CRYPTO_CHECK_DELAY_MS,
+} from "../services/crypto.service";
 
 const notificationService = NotificationService.getInstance();
 const cryptoService = new CryptoService();
 
 const queueProducer = new QueueProducer(redisConnection, DEFAULT_REDIS_QUEUE);
->>>>>>> feat/crypto
 class QueueConsumer {
   emailService: EmailService;
   transactionService: TransactionService;
@@ -39,12 +39,21 @@ class QueueConsumer {
       const { requeue } = await cryptoService.verifyDeposit(depositId);
 
       if (requeue) {
-        await cryptoService.scheduleVerification(depositId, CRYPTO_CHECK_DELAY_MS);
+        await cryptoService.scheduleVerification(
+          depositId,
+          CRYPTO_CHECK_DELAY_MS,
+        );
       }
     } catch (error: any) {
-      console.error(`Failed to verify crypto deposit ${depositId}:`, error.message);
+      console.error(
+        `Failed to verify crypto deposit ${depositId}:`,
+        error.message,
+      );
       // Don't let one bad deposit stall forever — try again on the normal cadence.
-      await cryptoService.scheduleVerification(depositId, CRYPTO_CHECK_DELAY_MS);
+      await cryptoService.scheduleVerification(
+        depositId,
+        CRYPTO_CHECK_DELAY_MS,
+      );
     }
   }
 
@@ -79,6 +88,7 @@ class QueueConsumer {
         case "send-admin-invite-email":
         case "send-admin-account-creation-email":
         case "send-passcode-reset-email":
+        case "send-transaction-pin-reset-email":
         case "send-admin-electricity-topup-email":
         case "send-disco-token-email":
           console.log("processing email job");
@@ -100,19 +110,11 @@ class QueueConsumer {
             recipientEmail: (job.data as any).recipient,
           });
           break;
-<<<<<<< HEAD
-=======
-        case "auto-requery-bp":
-          await this.handleAutoRequery(
-            job.data as { transactionId: string; retryCount: number },
-          );
-          break;
         case "verify-crypto-deposit":
           await this.handleVerifyCryptoDeposit(
             job.data as { depositId: string },
           );
           break;
->>>>>>> feat/crypto
         default:
           throw new Error("Method not found to run Job");
       }

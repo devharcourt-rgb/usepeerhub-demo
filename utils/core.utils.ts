@@ -122,6 +122,10 @@ export async function processFileUploads(
 ) {
   const urls: { [key: string]: string } = {};
 
+  if (!files) {
+    return urls;
+  }
+
   for (const fileKey of Object.keys(files)) {
     const file = files[fileKey][0];
 
