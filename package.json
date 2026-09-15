@@ -7,6 +7,7 @@
     "build": "npx tsc",
     "start": "node dist/app.js",
     "tsnode": "npx ts-node",
+    "rates:set": "ts-node scripts/set-crypto-rates.ts",
     "test": "jest"
   },
   "engines": {
