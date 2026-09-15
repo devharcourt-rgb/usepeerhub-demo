@@ -31,7 +31,13 @@ class EmailService {
             console.log(res);
           });
       } catch (error) {
-        console.log(error);
+        // Re-throw — swallowing this here meant a real send failure (wrong
+        // host, bad auth, etc.) still resolved sendEmail() successfully, so
+        // the queue job reported "completed" with no email ever sent and no
+        // error visible anywhere. Let it propagate so processJob's catch
+        // (queue/consumer.ts) marks the job failed and logs the real cause.
+        console.error(`Failed to send ${type} email to ${recipientEmail}:`, error);
+        throw error;
       }
     } else {
       throw new Error("Email template not found");

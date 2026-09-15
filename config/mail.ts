@@ -16,7 +16,7 @@ export const resendClient = new Resend(resendApiKey);
 
 // use nodemailer to send emails
 export const nodemailerClient = nodemailer.createTransport({
-  host: "mail.privatemail.com",
+  host: "mail.privateemail.com",
   port: 465,
   secure: true, // true for port 465, false for other ports
   auth: {
